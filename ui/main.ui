@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>511</width>
+    <height>715</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>511</width>
+    <height>715</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>511</width>
+    <height>715</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="closeBtn">
+   <property name="geometry">
+    <rect>
+     <x>335</x>
+     <y>667</y>
+     <width>113</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>종료</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="settingBtn">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>667</y>
+     <width>113</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>설정</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="updateBtn">
+   <property name="geometry">
+    <rect>
+     <x>65</x>
+     <y>667</y>
+     <width>113</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>업데이트</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="outputDBTable">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>10</y>
+     <width>491</width>
+     <height>651</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
