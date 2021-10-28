@@ -3,9 +3,9 @@
 이 프로그램의 저작권은 ZETA-A(Github)에게 있습니다.
 (문의 : open120488@gmail.com)
 
-프로그램의 라이선스는 MIT라이선스가 적용되어있습니다.
+프로그램의 라이선스는 ZETA Custiom License가 적용되어있습니다.
 
-MIT 라이선스에 따라 사용하지않을경우 법적책임이 가해질 수 있습니다.
+ZETA Custiom License에 따라 사용하지않을경우 법적책임이 가해질 수 있습니다.
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'''
 
@@ -21,6 +21,8 @@ import os
 import os.path
 import sys
 from time import sleep
+import datetime
+import time
 
 from PyQt5.QtWidgets import QApplication, QLabel
 import PyQt5
@@ -37,6 +39,7 @@ LOAD_DB = '_settings/outputDB.db'
 LOAD_SETTING_JSON = '_settings/setting.json'
 LOAD_ICON = '_settings/icon.png'
 SETTING_GROUP = dict()
+SERIAL = "vmfhrmfoadml-fkdltjstmrk-aksfyehldjTtmqslek"
 
 '''
 프로그램 시작
@@ -53,7 +56,7 @@ else:
     conn = sqlite3.connect(LOAD_DB)  # SQL 연결
     cur = conn.cursor()
     cur.execute(
-        "CREATE TABLE log(시간 text, 학번 text, 이름 text, 확인여부 text)")
+        "CREATE TABLE log(학번 text, 딱지완료시간 text, 무궁화완료시간 text, 구슬완료시간 text, 딱지확인란 text, 무궁화확인란 text, 구슬확인란 text)")
     conn.commit()
     conn.close()
 
@@ -70,13 +73,16 @@ else:
     with open(LOAD_SETTING_JSON, 'w', encoding="utf-8") as make_file:
         json.dump(SETTING_GROUP, make_file, indent="\t")
 
-
 with open(LOAD_SETTING_JSON, 'r', encoding="utf-8") as f:
     json_data = json.load(f)
 
 spreadsheet_url = json_data['URL']
 sheet_name = json_data['NAME']
 json_file_name = json_data['API']
+
+
+d = datetime.datetime.now()
+licenseCheck = f"{d.year}{d.month}{d.day}"
 
 '''
 구글 스프레드 시트 통신 명령
@@ -99,26 +105,30 @@ def googleSheet():
     # 시트 선택하기
     worksheet = doc.worksheet(sheet_name)
 
-    worksheet.resize(1000, 4)
+    worksheet.resize(1000, 7)
     print("시트 연결성공")
 
-    column_data = worksheet.col_values(4)
+    column_data = worksheet.col_values(5 or 6 or 7)
 
     for index, x in enumerate(column_data):
         if x == 'O':
 
-            cell_time_data = worksheet.acell('A' + str(index + 1)).value
-            cell_num_data = worksheet.acell('B' + str(index + 1)).value
-            cell_name_data = worksheet.acell('C' + str(index + 1)).value
-            cell_OX_data = worksheet.acell('D' + str(index + 1)).value
-
-            print(cell_time_data)
+            cell_num_data = worksheet.acell('A' + str(index + 1)).value
+            cell_DdacTime_data = worksheet.acell('B' + str(index + 1)).value
+            cell_MuGungHwaTime_data = worksheet.acell(
+                'C' + str(index + 1)).value
+            cell_GuSeulChiGiTime_data = worksheet.acell(
+                'D' + str(index + 1)).value
+            cell_DdacZziChiGi_data = worksheet.acell(
+                'E' + str(index + 1)).value
+            cell_MuGungHwa_data = worksheet.acell('F' + str(index + 1)).value
+            cell_GuSeulChiGi_data = worksheet.acell('G' + str(index + 1)).value
 
             print(cell_num_data)
-            cur.execute("INSERT INTO log (시간, 학번, 이름, 확인여부) VALUES(?, ?, ?, ?)",
-                        (cell_time_data, cell_num_data, cell_name_data, cell_OX_data))
+            cur.execute("INSERT INTO log (학번, 딱지완료시간, 무궁화완료시간, 구슬완료시간, 딱지확인란, 무궁화확인란, 구슬확인란) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                        (cell_num_data, cell_DdacTime_data, cell_MuGungHwaTime_data, cell_GuSeulChiGiTime_data, cell_DdacZziChiGi_data, cell_MuGungHwa_data, cell_GuSeulChiGi_data))
             cur.execute(
-                "DELETE FROM log WHERE rowid NOT IN (SELECT min(rowid) FROM log GROUP BY 학번, 이름);")
+                "DELETE FROM log WHERE rowid < (SELECT max(rowid) FROM log GROUP BY 학번);")
             conn.commit()
 
 
@@ -127,41 +137,107 @@ UI 구성 명령
 '''
 
 
+class LicenseEndWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        # 오류 메시지 발생
+        self.setGeometry(300, 300, 635, 198)
+        self.setMinimumSize(635, 198)
+        self.setMaximumSize(635, 198)
+        self.setWindowTitle('라이선스가 만료되었습니다!')
+        self.setWindowIcon(QIcon(LOAD_ICON))
+
+        # 가장 큰 라벨
+        self.bigLabel = QLabel(self)
+        self.bigLabel.setGeometry(20, 20, 601, 51)
+        self.bigLabel.setText("프로그램의 라이선스가 만료되었습니다!")
+        self.bigLabel.setFont(QFont('Arial', 25))
+
+        # 중간 라벨
+        self.midLabel = QLabel(self)
+        self.midLabel.setGeometry(20, 70, 471, 31)
+        self.midLabel.setText("시리얼 넘버를 입력한 후, 확인을 눌러주세요")
+        self.midLabel.setFont(QFont('Arial', 17))
+
+        # 시리얼 입력 인덱스
+        self.serialIndex = QLineEdit(self)
+        self.serialIndex.setGeometry(20, 100, 591, 51)
+        self.serialIndex.setFont(QFont('Arial', 12))
+
+        # 작은 라벨
+        self.smallLabel = QLabel(self)
+        self.smallLabel.setGeometry(20, 160, 241, 21)
+        self.smallLabel.setText("( 시리얼 넘버의 '-'도 모두 입력해주세요 )")
+        self.smallLabel.setFont(QFont('Arial', 9))
+
+        # 확인 버튼
+        self.okBtn = QPushButton(self)
+        self.okBtn.setGeometry(440, 160, 75, 23)
+        self.okBtn.setText("확인")
+        self.okBtn.setFont(QFont('Arial', 9))
+        self.okBtn.clicked.connect(self.verify)
+
+        # 종료 버튼
+        self.cancelBtn = QPushButton(self)
+        self.cancelBtn.setGeometry(530, 160, 75, 23)
+        self.cancelBtn.setText("종료")
+        self.cancelBtn.setFont(QFont('Arial', 9))
+        self.cancelBtn.clicked.connect(self.close)
+
+    def verify(self):
+        if SERIAL == self.serialIndex.text():
+            MainWindow().show()
+        else:
+            self.serialIndex.setText("시리얼 넘버가 틀렸습니다!")
+
+    def close(self):
+        os._exit(1)
+
+
 class MainWindow(QMainWindow, QThread):
     def __init__(self):
         super().__init__()
 
         # 윈도우 설정
-        self.setGeometry(300, 300, 511, 715)  # x, y, w, h
-        self.setMinimumSize(511, 715)
-        self.setMaximumSize(511, 715)
+        self.setGeometry(300, 300, 1000, 715)  # x, y, w, h
+        self.setMinimumSize(1000, 715)
+        self.setMaximumSize(1000, 715)
         self.setWindowTitle('구글시트 카운팅 프로그램')
         self.setWindowIcon(QIcon(LOAD_ICON))
 
         #  SQL 테이블
         self.sqlTable = QTableWidget(self)
-        self.sqlTable.setGeometry(11, 10, 491, 651)
+        self.sqlTable.setGeometry(11, 10, 981, 651)
         self.sqlTable.setRowCount(1000)
-        self.sqlTable.setColumnCount(4)
-        self.sqlTable.setHorizontalHeaderLabels(["시간", "학번", "이름", "확인여부"])
+        self.sqlTable.setColumnCount(7)
+        self.sqlTable.setHorizontalHeaderLabels(
+            ["학번", "딱지 완료 시간", "무궁화 완료 시간", "구슬 완료 시간", "딱지 확인란", "무궁화 확인란", "구슬 확인란"])
+        self.sqlTable.setColumnWidth(0, 80)
+        self.sqlTable.setColumnWidth(1, 200)
+        self.sqlTable.setColumnWidth(2, 200)
+        self.sqlTable.setColumnWidth(3, 200)
+        self.sqlTable.setColumnWidth(4, 80)
+        self.sqlTable.setColumnWidth(5, 82)
+        self.sqlTable.setColumnWidth(6, 80)
 
         # 업데이트 버튼
         self.updateBtn = QPushButton(self)
-        self.updateBtn.setGeometry(65, 667, 113, 41)
+        self.updateBtn.setGeometry(310, 667, 113, 41)
         self.updateBtn.clicked.connect(googleSheet)
         self.updateBtn.clicked.connect(self.LoadData)
         self.updateBtn.setText("업데이트")
 
         # 세팅 버튼
         self.settingBtn = QPushButton(self)
-        self.settingBtn.setGeometry(200, 667, 113, 41)
+        self.settingBtn.setGeometry(445, 667, 113, 41)
         self.settingBtn.clicked.connect(self.setting_popup)
         self.settingBtn.clicked.connect(self.OpenLoadData)
         self.settingBtn.setText("설정")
 
         # 종료 버튼
         self.closeBtn = QPushButton(self)
-        self.closeBtn.setGeometry(335, 667, 113, 41)
+        self.closeBtn.setGeometry(580, 667, 113, 41)
         self.closeBtn.clicked.connect(self.closeProgram)
         self.closeBtn.setText("종료")
 
@@ -271,12 +347,20 @@ class MainWindow(QMainWindow, QThread):
                 tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
             self.sqlTable.setItem(
                 tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
+            self.sqlTable.setItem(
+                tablerow, 4, QtWidgets.QTableWidgetItem(row[4]))
+            self.sqlTable.setItem(
+                tablerow, 5, QtWidgets.QTableWidgetItem(row[5]))
+            self.sqlTable.setItem(
+                tablerow, 6, QtWidgets.QTableWidgetItem(row[6]))
             tablerow += 1
-            print(datetime.now().strftime("%H:%M:%S"))
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    mainWindow = MainWindow()
+    if licenseCheck > f"20220111":
+        mainWindow = LicenseEndWindow()
+    elif licenseCheck < f"20220111":
+        mainWindow = MainWindow()
     mainWindow.show()
     sys.exit(app.exec_())

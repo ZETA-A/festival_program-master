@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>511</width>
+    <width>1000</width>
     <height>715</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>511</width>
+    <width>1000</width>
     <height>715</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>511</width>
+    <width>1000</width>
     <height>715</height>
    </size>
   </property>
@@ -33,7 +33,7 @@
   <widget class="QPushButton" name="closeBtn">
    <property name="geometry">
     <rect>
-     <x>335</x>
+     <x>580</x>
      <y>667</y>
      <width>113</width>
      <height>41</height>
@@ -46,7 +46,7 @@
   <widget class="QPushButton" name="settingBtn">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>445</x>
      <y>667</y>
      <width>113</width>
      <height>41</height>
@@ -59,7 +59,7 @@
   <widget class="QPushButton" name="updateBtn">
    <property name="geometry">
     <rect>
-     <x>65</x>
+     <x>310</x>
      <y>667</y>
      <width>113</width>
      <height>41</height>
@@ -74,7 +74,7 @@
     <rect>
      <x>11</x>
      <y>10</y>
-     <width>491</width>
+     <width>981</width>
      <height>651</height>
     </rect>
    </property>
