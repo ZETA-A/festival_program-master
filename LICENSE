@@ -1,21 +1,23 @@
-MIT License
+ZETA Custom License
 
 Copyright (c) 2021 A_ZETA_A
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+이 프로그램은 다음과 같은 제약사항을 받습니다:
+1. 이 프로그램은 클로즈 소프트웨어입니다. 
+   프로그램의 코드를 절대 공개하지않습니다.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. 이 프로그램은 사용기한이 지정되어있습니다.
+   사용기한은 2021년 10월 30일 0시까지 입니다.
+   프로그램 사용 전, 꼭 확인해주시길 바랍니다.
+   이후 사용을 위해서는 개발자에게 문의를 해주시길 바랍니다.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+3. 이 프로그램은 2차배포가 금지되어있습니다.
+   프로그램은 꼭 이 GitHub를 통하여 배포하여주시길 바랍니다.
+
+4. 구버전을 사용 중일지라도, 라이선스는 최신버전의 라이선스와 동일하게 적용되어있습니다.
+   꼭 업데이트를 통하여 라이선스가 변동되지않았는지 확인해주시길 바랍니다.
+   교육기관이나 업체의 경우, 라이선스가 변경될 때 미리 고지됩니다.
+   또한, 이 라이선스(ZETA Custom License)가 적용될 때에도 미리 고지됩니다.
+
+본 프로그램은 위와같은 라이선스가 적용되어있으며, 위의 라이선스를 위반하였을 경우 저작권법에 의거하여 강력한 법적조치가 이루어질 수 있습니다.
+(2021년 10월 28일 22시 00분에 라이선스가 본 프로그램에 적용되었으며, 본 프로그램을 사용하는 기관에 고지를 완료했음)
