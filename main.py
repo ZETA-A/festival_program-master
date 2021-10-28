@@ -22,7 +22,10 @@ import os.path
 import sys
 from time import sleep
 import datetime
+<<<<<<< HEAD
 import time
+=======
+>>>>>>> 6dd057e7bbbc1fbf97f6980eb6f3940145c59db7
 
 from PyQt5.QtWidgets import QApplication, QLabel
 import PyQt5
@@ -44,6 +47,7 @@ SERIAL = "vmfhrmfoadml-fkdltjstmrk-aksfyehldjTtmqslek"
 '''
 프로그램 시작
 '''
+<<<<<<< HEAD
 # DB 파일체크
 if os.path.isfile(LOAD_DB):
     print("DB 파일이 확인되었습니다")
@@ -75,10 +79,54 @@ else:
 
 with open(LOAD_SETTING_JSON, 'r', encoding="utf-8") as f:
     json_data = json.load(f)
+=======
+def programStart():
+    # DB 파일체크
+    if os.path.isfile(LOAD_DB):
+        print("DB 파일이 확인되었습니다")
+        conn = sqlite3.connect(LOAD_DB)  # SQL 연결
+        cur = conn.cursor()
+        pass
+    else:
+        print("파일이 존재하지않습니다")
+        print(LOAD_DB + " 파일을 생성합니다")
+        conn = sqlite3.connect(LOAD_DB)  # SQL 연결
+        cur = conn.cursor()
+        cur.execute(
+            "CREATE TABLE log(시간 text, 학번 text, 이름 text, 확인여부 text)")
+        conn.commit()
+        conn.close()
 
-spreadsheet_url = json_data['URL']
-sheet_name = json_data['NAME']
-json_file_name = json_data['API']
+    # JSON 파일체크
+    if os.path.isfile(LOAD_SETTING_JSON):
+        print("JSON 파일이 확인되었습니다")
+        pass
+    else:
+        print("JSON 파일이 존재하지않습니다")
+        print(LOAD_SETTING_JSON + " 파일을 생성합니다")
+        SETTING_GROUP["URL"] = "Empty"
+        SETTING_GROUP["NAME"] = "Empty"
+        SETTING_GROUP["API"] = "Empty"
+        with open(LOAD_SETTING_JSON, 'w', encoding="utf-8") as make_file:
+            json.dump(SETTING_GROUP, make_file, indent="\t")
+
+
+    with open(LOAD_SETTING_JSON, 'r', encoding="utf-8") as f:
+        json_data = json.load(f)
+>>>>>>> 6dd057e7bbbc1fbf97f6980eb6f3940145c59db7
+
+    spreadsheet_url = json_data['URL']
+    sheet_name = json_data['NAME']
+    json_file_name = json_data['API']
+d = datetime.datetime.now()
+licenseCheck = f"{d.year}{d.month}{d.day}"
+print(licenseCheck)
+if licenseCheck > f"20211030":
+    print("사용기한이 지났습니다")
+    os._exit(1)
+else:
+    print("사용기한이 남아있습니다")
+    programStart()
 
 
 d = datetime.datetime.now()
@@ -113,6 +161,7 @@ def googleSheet():
     for index, x in enumerate(column_data):
         if x == 'O':
 
+<<<<<<< HEAD
             cell_num_data = worksheet.acell('A' + str(index + 1)).value
             cell_DdacTime_data = worksheet.acell('B' + str(index + 1)).value
             cell_MuGungHwaTime_data = worksheet.acell(
@@ -127,6 +176,19 @@ def googleSheet():
             print(cell_num_data)
             cur.execute("INSERT INTO log (학번, 딱지완료시간, 무궁화완료시간, 구슬완료시간, 딱지확인란, 무궁화확인란, 구슬확인란) VALUES(?, ?, ?, ?, ?, ?, ?)",
                         (cell_num_data, cell_DdacTime_data, cell_MuGungHwaTime_data, cell_GuSeulChiGiTime_data, cell_DdacZziChiGi_data, cell_MuGungHwa_data, cell_GuSeulChiGi_data))
+=======
+            cell_DdacTime_data = worksheet.acell('A' + str(index + 1)).value
+            cell_MuGungHwaTime_data = worksheet.acell('B' + str(index + 1)).value
+            cell_GuSeulChiGiTime_data = worksheet.acell('C' + str(index + 1)).value
+            cell_num_data = worksheet.acell('D' + str(index + 1)).value
+            cell_DdacZziChiGi_data = worksheet.acell('D' + str(index + 1)).value
+            cell_MuGungHwa_data = worksheet.acell('E' + str(index + 1)).value
+            cell_GuSeulChiGi_data = worksheet.acell('F' + str(index + 1)).value
+
+            print(cell_num_data)
+            cur.execute("INSERT INTO log (딱찌 완료 시간, 무궁화 완료 시간, 구슬 완료 시간, 학번, 이름, 딱치치기, 무궁화꽃, 구슬치기) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+                        (cell_DdacTime_data, cell_num_data, cell_DdacZziChiGi_data, cell_MuGungHwa_data, cell_GuSeulChiGi_data))
+>>>>>>> 6dd057e7bbbc1fbf97f6980eb6f3940145c59db7
             cur.execute(
                 "DELETE FROM log WHERE rowid < (SELECT max(rowid) FROM log GROUP BY 학번);")
             conn.commit()
@@ -135,7 +197,9 @@ def googleSheet():
 '''
 UI 구성 명령
 '''
-
+class LicenseEndWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
 
 class LicenseEndWindow(QMainWindow):
     def __init__(self):
